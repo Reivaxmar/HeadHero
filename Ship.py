@@ -15,6 +15,7 @@ class Ship(pygame.sprite.Sprite):
         self.image = pygame.image.load("ship.png")
         self.image = pygame.transform.scale(self.image, (4*17, 4*19))
         self.rect = self.image.get_rect()
+        self.move((1600 / 2 - self.rect.width / 2, 900 - self.rect.height / 2))
 
     def update(self):
         keys = pygame.key.get_pressed()
