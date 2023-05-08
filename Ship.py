@@ -1,6 +1,12 @@
 import pygame.sprite
 import pygame
-
+def clamp(n, min, max):
+    if n < min:
+        return min
+    elif n > max:
+        return max
+    else:
+        return n
 
 class Ship(pygame.sprite.Sprite):
     def __init__(self):
@@ -21,6 +27,9 @@ class Ship(pygame.sprite.Sprite):
         if keys[pygame.K_w]:
             self.move((0, -10))
 
+        self.rect.x = clamp(self.rect.x, 0, 1600 - self.rect.width)
+        self.rect.y = clamp(self.rect.y, 0, 900 - self.rect.height)
+
     def moveKey(self, key):
         if key == pygame.K_a:
             self.move((-10, 0))
@@ -30,6 +39,8 @@ class Ship(pygame.sprite.Sprite):
             self.move((0, 10))
         if key == pygame.K_w:
             self.move((0, -10))
+
+
 
     def move(self, pos):
         self.rect.x += pos[0]
