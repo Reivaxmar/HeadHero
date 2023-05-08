@@ -7,21 +7,16 @@ class Scoreboard(pygame.sprite.Sprite):
         super().__init__()
         pygame.sprite.Sprite.__init__(self)
 
+        # Initcialitza les vides i la puntuació
         self.Lives = 3
         self.Score = 0
 
+        # Importa la font i ho posa per sobre de tot
         self.font = pygame.font.Font("Singkong.ttf", 60)
         self.layer = 1
 
-        self.image1 = self.font.render(f"Lives: {self.Lives}", True, (0, 0, 0))
-        self.image2 = self.font.render(f"Score: {self.Score}", True, (0, 0, 0))
-        self.rect = (self.image1.get_width() + self.image2.get_width(),
-                     max(self.image1.get_height(), self.image2.get_height()))
-        self.image = pygame.Surface((self.rect[0], self.rect[1]))
-        self.image.blit(self.image1, (0, 0))
-        self.image.blit(self.image2, (0, self.image1.get_height()))
-
     def update(self):
+        # Un programa molt llarg per juntar dues imatges
         self.image1 = self.font.render(f"Lives: {self.Lives}", True, (255, 0, 0))
         self.image2 = self.font.render(f"Score: {self.Score}", True, (0, 0, 255))
         height = self.image1.get_height() + self.image2.get_height()
@@ -34,7 +29,7 @@ class Scoreboard(pygame.sprite.Sprite):
         self.image.blit(self.image1, (0, 0))
         self.image.blit(self.image2, (0, self.image1.get_height()))
 
-    def addScore(self, type, num):
+    def addScore(self, type, num): # No serveix, però l'utilitzo :)
         if type == "Score":
             self.Score += num
         elif type == "Lives":
