@@ -1,5 +1,8 @@
 import pygame.sprite
 import pygame
+import Hardcodes
+
+
 def clamp(n, min, max): # Per a que el jugador no es surti de la pantalla.
     if n < min:
         return min
@@ -14,30 +17,28 @@ class Ship(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         # Importa l'imatge de la nau i la fa gran
         self.image = pygame.image.load("ship.png")
-        self.image = pygame.transform.scale(self.image, (4*17, 4*19))
+        self.image = pygame.transform.scale(self.image, (3*17, 3*19))
         self.rect = self.image.get_rect()
         # Centra la nau
-        self.move((1600 / 2 - self.rect.width / 2, 900 - self.rect.height / 2))
+        self.move((Hardcodes.windowSize[0] / 2 - self.rect.width / 2, Hardcodes.windowSize[1] - self.rect.height / 2), 1)
 
-    def update(self):
+    def update(self, dt):
         # Mou la nau
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
-            self.move((-10, 0))
+            self.move((-Hardcodes.shipSpeed, 0), dt)
         if keys[pygame.K_d]:
-            self.move((10, 0))
+            self.move((Hardcodes.shipSpeed, 0), dt)
         if keys[pygame.K_s]:
-            self.move((0, 10))
+            self.move((0, Hardcodes.shipSpeed), dt)
         if keys[pygame.K_w]:
-            self.move((0, -10))
+            self.move((0, -Hardcodes.shipSpeed), dt)
 
         # I fa que no es surti
-        self.rect.x = clamp(self.rect.x, 0, 1600 - self.rect.width)
-        self.rect.y = clamp(self.rect.y, 0, 900 - self.rect.height)
+        self.rect.x = clamp(self.rect.x, 0, Hardcodes.windowSize[0] - self.rect.width)
+        self.rect.y = clamp(self.rect.y, 0, Hardcodes.windowSize[1] - self.rect.height)
 
-
-
-    def move(self, pos):
-        self.rect.x += pos[0]
-        self.rect.y += pos[1]
+    def move(self, pos, dt):
+        self.rect.x += pos[0] * dt
+        self.rect.y += pos[1] * dt
 

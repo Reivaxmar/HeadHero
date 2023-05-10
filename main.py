@@ -1,3 +1,4 @@
+import Hardcodes
 from Ship import Ship
 from Bullet import Bullet
 from Alien import Alien
@@ -7,7 +8,7 @@ import pygame.mixer
 
 # Inicialitza Pygame i la pantalla
 pygame.init()
-screen = pygame.display.set_mode((1600, 900))
+screen = pygame.display.set_mode(Hardcodes.windowSize)
 # Inicialitza el rellotge per fer el framerate constant (60 fps)
 clock = pygame.time.Clock()
 
@@ -36,6 +37,7 @@ start_fire = time.time()
 # La imatge de fons escalada per a que es vegi millor
 backgroundImg = pygame.image.load("background.jpg")
 backgroundImg = pygame.transform.scale(backgroundImg, (1950, 1300))
+dt = 0
 
 # Bucle principal
 Running = True
@@ -45,7 +47,7 @@ while Running:
             Running = False
         if event.type == pygame.KEYDOWN:
             # Si has disparat i es pot disparar
-            if event.key == pygame.K_SPACE and time.time() - start_fire > 0.5:
+            if event.key == pygame.K_SPACE and time.time() - start_fire > Hardcodes.fireDelay:
                 # Resetea el timer
                 start_fire = time.time()
                 # Crea la bala
@@ -63,7 +65,7 @@ while Running:
         waitTime += spawnRate
         spritesGroup.add(Alien())
 
-    spritesGroup.update()
+    spritesGroup.update(dt)
 
     # Colisions
     for spr in spritesGroup.sprites():
@@ -95,6 +97,8 @@ while Running:
 
     pygame.display.flip()
 
-    clock.tick(60)
+    dt = clock.tick(60) / 1000.0 * 60
+    dt = round(dt * 10) / 10
+    print(dt)
 
 pygame.quit()
