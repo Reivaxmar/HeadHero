@@ -6,20 +6,20 @@ from Scoreboard import Scoreboard
 import time
 import pygame.mixer
 
-# Inicialitza Pygame i la pantalla
+# Initialize Pygame and the screen
 pygame.init()
 screen = pygame.display.set_mode(Hardcodes.windowSize)
-# Inicialitza el rellotge per fer el framerate constant (60 fps)
+# Init the clock for constant fps
 clock = pygame.time.Clock()
 
-# Posa en bucle la musica de fons
+# Import and start the background music
 pygame.mixer.music.load("ElectromanAdventures.mp3")
 pygame.mixer.music.play(-1)
 
-# Crea el grup de Sprites
+# Create the sprite group
 spritesGroup = pygame.sprite.Group()
 
-# Crea el jugador
+# Create the player object
 Player = Ship()
 spritesGroup.add(Player)
 
@@ -27,7 +27,7 @@ spritesGroup.add(Player)
 sb = Scoreboard()
 spritesGroup.add(sb)
 
-# Spawnrate -> Disminueix en 0.001 cada vegada que un alien apareix, per així fer que els aliens apareguin cada
+# sepawnrate -> Disminueix en 0.001 cada vegada que un alien apareix, per així fer que els aliens apareguin cada
 # vegada més ràpid
 spawnRate = 1
 waitTime = 1
@@ -42,6 +42,10 @@ dt = 0
 # Bucle principal
 Running = True
 while Running:
+
+    dt = clock.tick(60) / 1000.0 * 60
+    dt = round(dt * 100) / 100
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             Running = False
@@ -96,9 +100,5 @@ while Running:
     spritesGroup.draw(screen)
 
     pygame.display.flip()
-
-    dt = clock.tick(60) / 1000.0 * 60
-    dt = round(dt * 10) / 10
-    print(dt)
 
 pygame.quit()
