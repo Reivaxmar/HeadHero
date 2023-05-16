@@ -3,7 +3,7 @@ import pygame
 import Hardcodes
 
 
-def clamp(n, m, M):  # For the player to not get outside of the window
+def clamp(n, m, M):  # For the player to not get outside the window
     if n < m:
         return m
     elif n > M:
