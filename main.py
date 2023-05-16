@@ -64,7 +64,7 @@ while Running:
 
     # Create the enemies
     if time.time() - start_time > waitTime:
-        spawnRate -= 0.001
+        spawnRate -= 0.005
         waitTime += spawnRate
         spritesGroup.add(Alien())
 
@@ -91,10 +91,25 @@ while Running:
                 # Remove 1 from "Lives" and delete the enemy
                 sb.addScore("Lives", -1)
                 spr.kill()
+                # And make a sound
+                alienDie = pygame.mixer.Sound("explosion.wav")
+                alienDie.play()
 
     # Stop the program if you get out of lives
     if sb.Lives == 0:
         Running = False
+        pygame.mixer.music.stop()
+        gameOver = pygame.mixer.Sound("game-over.wav")
+        gameOver.play()
+        st = time.time()
+        et = 0
+        while et < 2:
+            et = time.time() - st
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    Running = False
+            pygame.display.flip()
+        break
 
     spritesGroup.draw(screen)
 
