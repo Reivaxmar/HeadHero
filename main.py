@@ -3,6 +3,7 @@ from Ship import Ship
 from Bullet import Bullet
 from Alien import Alien
 from Scoreboard import Scoreboard
+from ScrollBG import ScrollBG
 import time
 import pygame.mixer
 
@@ -34,8 +35,8 @@ waitTime = 1
 start_time = time.time()
 start_fire = time.time()
 # Import the background image and make it smaller so that it looks better
-backgroundImg = pygame.image.load("background.jpg")
-backgroundImg = pygame.transform.scale(backgroundImg, (1950, 1300))
+bg = ScrollBG()
+
 dt = 0
 
 # Main loop
@@ -60,7 +61,8 @@ while Running:
                 bulletSound.play()
 
     # Draw the background
-    screen.blit(backgroundImg, (-200, 0))
+    screen.blit(bg.image, bg.rect)
+    bg.update(dt)
 
     # Create the enemies
     if time.time() - start_time > waitTime:

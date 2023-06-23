@@ -4,3 +4,4 @@ startLives = 3
 shipSpeed = 2
 alienSpeed = 5
 bulletSpeed = 20
+bgscrollspeed = 1
