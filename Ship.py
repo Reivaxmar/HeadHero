@@ -48,8 +48,8 @@ class Ship(pygame.sprite.Sprite):
         self.rect.x += self.sx * dt
         self.rect.y += self.sy * dt
 
-        self.sx *= 0.8
-        self.sy *= 0.8
+        self.sx *= 0.7
+        self.sy *= 0.7
 
         self.rect.x = clamp(self.rect.x, 0, Hardcodes.windowSize[0] - self.rect.width)
         self.rect.y = clamp(self.rect.y, 0, Hardcodes.windowSize[1] - self.rect.height)

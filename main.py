@@ -4,14 +4,21 @@ from Bullet import Bullet
 from Alien import Alien
 from Scoreboard import Scoreboard
 from ScrollBG import ScrollBG
+from FaceDetector import FaceInterface
 import time
 import pygame.mixer
 
 # Initialize Pygame and the screen
 pygame.init()
 screen = pygame.display.set_mode(Hardcodes.windowSize)
+pygame.display.set_caption("Head Hero")
 # Init the clock for constant fps
 clock = pygame.time.Clock()
+
+# Create the Face Interface object and wait for it to start
+mFI = FaceInterface()
+while not mFI.hasStarted:
+    pass
 
 # Import and start the background music
 pygame.mixer.music.load("ElectromanAdventures.mp3")
@@ -28,7 +35,8 @@ spritesGroup.add(Player)
 sb = Scoreboard()
 spritesGroup.add(sb)
 
-# Spawnrate -> it decreases in 0.001 every time an enemy spawns, so that they spawn faster
+
+# spawnrate -> it decreases in 0.001 every time an enemy spawns, so that they spawn faster
 spawnRate = 1
 waitTime = 1
 # Timers to know when an enemy spawns and when you can fire a bullet
@@ -63,6 +71,9 @@ while Running:
     # Draw the background
     screen.blit(bg.image, bg.rect)
     bg.update(dt)
+
+    # Update the camera window
+    mFI.getImage()
 
     # Create the enemies
     if time.time() - start_time > waitTime:
@@ -117,4 +128,5 @@ while Running:
 
     pygame.display.flip()
 
+mFI.closeCam()
 pygame.quit()
