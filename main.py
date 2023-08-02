@@ -50,23 +50,16 @@ dt = 0
 # Main loop
 Running = True
 while Running:
-
+    # Calculate delta time
     dt = clock.tick(60) / 1000.0 * 60
     dt = round(dt * 100) / 100
 
+    # If quitting or pressing escape
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             Running = False
-        if event.type == pygame.KEYDOWN:
-            # If you shoot and you can shoot
-            if event.key == pygame.K_SPACE and time.time() - start_fire > Hardcodes.fireDelay:
-                # Reset the shoot timer
-                start_fire = time.time()
-                # Create a bullet
-                spritesGroup.add(Bullet(Player))
-                # And make a sound
-                bulletSound = pygame.mixer.Sound("laserShoot.wav")
-                bulletSound.play()
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            Running = False
 
     # Draw the background
     screen.blit(bg.image, bg.rect)
@@ -75,12 +68,25 @@ while Running:
     # Update the camera window
     mFI.getImage()
 
+    # If you shoot and you can shoot
+    if (pygame.key.get_pressed()[pygame.K_SPACE] or mFI.info[1]) and time.time() - start_fire > Hardcodes.fireDelay:
+        # Reset the shoot timer
+        start_fire = time.time()
+        # Create a bullet
+        spritesGroup.add(Bullet(Player))
+        # And make a sound
+        bulletSound = pygame.mixer.Sound("laserShoot.wav")
+        bulletSound.play()
+
     # Create the enemies
     if time.time() - start_time > waitTime:
         spawnRate -= 0.005
         waitTime += spawnRate
         spritesGroup.add(Alien())
 
+    # Update the face info in the player object
+    Player.updateFaceInfo(mFI.info)
+    # And update the objects
     spritesGroup.update(dt)
 
     # Collisions

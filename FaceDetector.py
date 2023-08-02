@@ -1,6 +1,10 @@
 import cv2
 import mediapipe as mp
 from threading import Thread
+import math
+
+import Hardcodes
+
 
 class FaceInterface():
     def __init__(self):
@@ -11,6 +15,7 @@ class FaceInterface():
         self.stopped = False
         self.hasStarted = False
         self.lastFrame = None
+        self.info = None
 
         # The camera thread
         t = Thread(target=self.updateWebcam, args=())
@@ -36,6 +41,7 @@ class FaceInterface():
 
                 # If it detects a face
                 if results.multi_face_landmarks:
+                    self.updateInfo(results.multi_face_landmarks[0])
                     # For every face in the screen (even though there is only one)
                     for face_landmarks in results.multi_face_landmarks:
                         # Draw the face tesselation
@@ -59,10 +65,24 @@ class FaceInterface():
             return
         # Show the last frame to a window
         frame = self.lastFrame
-        cv2.imshow('webCam', frame)
+        if Hardcodes.showcamera:
+            cv2.imshow('webCam', frame)
 
     def closeCam(self):
         # Stop everything
         self.stopped = True
         self.cam.release()
         cv2.destroyAllWindows()
+
+    def updateInfo(self, points):
+        # Calculate the angle of the face based on two points
+        A = points.landmark[151]
+        B = points.landmark[152]
+        angle = math.degrees(math.atan2(B.y - A.y, B.x - A.x)) - 90.0
+        # And calculate if the mouth is open
+        lipup = points.landmark[13]
+        lipdown = points.landmark[14]
+        shoot = math.sqrt((lipdown.x - lipup.x)**2 + (lipdown.y - lipup.y)**2) > 0.02
+
+        self.info = [angle, shoot]
+
